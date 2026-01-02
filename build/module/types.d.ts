@@ -7,4 +7,5 @@ export interface Module extends LifecycleHooks {
     onInit?(app: AppRuntime): void;
     onDestroy?(): void;
     onModuleLoaded?(dep: Module): void;
+    onModuleInitDone?(): void;
 }

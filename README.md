@@ -46,9 +46,8 @@ npm install @delpi/restruct
 
 ## 🚀 Basic Usage (Headless)
 
-### 1️⃣ Basic Example
-
 ```ts
+// Option [1]: Basic
 // counter.store.ts
 import { Store } from "@delpi/restruct"
 export const counterStore = new Store({ value: 0 })
@@ -77,6 +76,47 @@ console.log("Counter value:", counterStore.get().value) // 1
 ```
 
 > ✅ Quick start, headless, fully testable, no React required.
+
+```ts
+// Option [2]: Module loader
+// my.module.ts
+import { Injectable } from "@delpi/restruct"
+import { AppRuntime, Module } from "@delpi/restruct"
+
+@Injectable()
+class LoggerService {
+  log(msg: string) { console.log("[Logger]", msg) }
+}
+
+export class MyModule implements Module {
+  name = "my"
+
+  static __moduleOptions = {
+    providers: [LoggerService]
+  }
+
+  setup(app: AppRuntime) {
+    const logger = app.container.resolve(LoggerService)
+    app.intent.on("my/hello", () => logger.log("Hello from MyModule"))
+  }
+
+  onInit(app: AppRuntime) {
+    console.log("MyModule initialized")
+  }
+}
+
+// app.ts
+import { AppRuntime, loadModule } from "@delpi/restruct"
+import { MyModule } from "./my.module"
+
+const app = new AppRuntime()
+const moduleInstance = await loadModule(app, MyModule)
+
+app.intent.dispatch({ type: "my/hello" })
+// → logs: "[Logger] Hello from MyModule"
+```
+
+> ✅ The loadModule function allows you to load modules at runtime without manually instantiating them, making framework orchestration automatic, plugin-safe, and testable.
 
 ---
 

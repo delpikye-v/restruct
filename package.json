@@ -1,6 +1,6 @@
 {
   "name": "@delpi/restruct",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "React-oriented modular framework for intent-driven orchestration, reactive store, effects, and DI-enabled modules",
   "license": "MIT",
   "author": "Delpi.Kye",

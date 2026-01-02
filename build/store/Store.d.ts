@@ -6,19 +6,18 @@ export type StoreObserver<T> = (update: {
 }) => void;
 export declare class Store<T> {
     private state;
+    pluginLogId?: string | undefined;
     private listeners;
     private computed;
     private observers;
-    readonly id: string;
-    constructor(state: T);
+    private id;
+    constructor(state: T, pluginLogId?: string | undefined);
     get(): T;
     set(partial: Partial<T>): void;
     subscribe(fn: Listener<T>): () => boolean;
     computedValue(key: string, fn: Computed<T>): void;
     getComputed(key: string): any;
-    /**
-     * Plugin-safe observe
-     */
     observe(fn: StoreObserver<T>): () => boolean;
+    watch(fn: (state: T) => void): () => boolean;
 }
 export {};
